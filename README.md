@@ -94,7 +94,7 @@ One table, `transactions`: `type` (`income` | `expense`), positive `amount numer
 
 1. Push to GitHub and import the repo in Vercel (it detects Next.js; no build settings needed).
 2. Add the environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `DEMO_EMAIL`, `DEMO_PASSWORD` and, optionally, `CRON_SECRET`. **Don't** add the service role key.
-3. Deploy. [`vercel.json`](vercel.json) runs functions in Sydney (`syd1`), next to the database. Change it if your Supabase project lives elsewhere.
+3. Deploy. [`vercel.json`](vercel.json) runs functions in Singapore (`sin1`), next to the demo database. Change it to match your Supabase region (for example `syd1` for Sydney).
 4. [`vercel.json`](vercel.json) also schedules a daily call to `/api/keep-alive`. Free Supabase projects pause after a week without activity; this keeps the demo awake for reviewers and its month seeded.
 
 Password sign-in needs no Supabase redirect-URL setup.
