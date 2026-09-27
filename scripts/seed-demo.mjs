@@ -38,16 +38,33 @@ async function findUser(address) {
 }
 
 try {
-  const settings = { password, email_confirm: true, app_metadata: { demo: true } };
+  // The demo account can't be edited (see protect_demo_account), so a reset
+  // removes it, with its business and entries, and creates it again.
   const existing = await findUser(email);
-  const { data, error } = existing
-    ? await admin.auth.admin.updateUserById(existing.id, settings)
-    : await admin.auth.admin.createUser({ email, ...settings });
-  if (error) throw error;
+  if (existing) {
+    const { data: memberships, error: membershipError } = await admin
+      .from("business_members")
+      .select("business_id")
+      .eq("user_id", existing.id);
+    if (membershipError) throw membershipError;
 
-  // Start the demo fresh: the app re-seeds the current month on next open.
-  const { error: clearError } = await admin.from("transactions").delete().eq("user_id", data.user.id);
-  if (clearError) throw clearError;
+    const businessIds = memberships.map((row) => row.business_id);
+    if (businessIds.length) {
+      const { error: businessError } = await admin.from("businesses").delete().in("id", businessIds);
+      if (businessError) throw businessError;
+    }
+    const { error: deleteError } = await admin.auth.admin.deleteUser(existing.id);
+    if (deleteError) throw deleteError;
+  }
+
+  const { error } = await admin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    app_metadata: { demo: true },
+    user_metadata: { business_name: "Demo Plumbing" },
+  });
+  if (error) throw error;
 
   console.log(`${existing ? "Reset" : "Created"} demo account ${email}.`);
   console.log("Its current month fills with sample activity when it first opens the dashboard.");

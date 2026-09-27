@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Brand } from "@/components/brand";
-import { LoginForm } from "@/components/login-form";
+import { AuthForm } from "@/components/auth-form";
 
 export const metadata: Metadata = { title: "Log in" };
 
@@ -21,7 +21,7 @@ export default function LoginPage() {
           This month’s money in, money out and profit, on one screen.
         </p>
         <div className="mt-8">
-          <LoginForm demoAvailable={demoAvailable} />
+          <AuthForm demoAvailable={demoAvailable} />
         </div>
       </div>
     </main>

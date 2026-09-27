@@ -1,8 +1,18 @@
 import type { NextRequest } from "next/server";
+import { contentSecurityPolicy } from "@/lib/csp";
 import { updateSession } from "@/lib/supabase/proxy";
 
-export function proxy(request: NextRequest) {
-  return updateSession(request);
+export async function proxy(request: NextRequest) {
+  const nonce = btoa(crypto.randomUUID());
+  const csp = contentSecurityPolicy(nonce);
+
+  // Next.js reads the nonce from the request's policy and adds it to its own scripts.
+  request.headers.set("x-nonce", nonce);
+  request.headers.set("content-security-policy", csp);
+
+  const response = await updateSession(request);
+  response.headers.set("content-security-policy", csp);
+  return response;
 }
 
 export const config = {

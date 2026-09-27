@@ -8,8 +8,9 @@ import { supabaseConfig } from "@/lib/supabase/config";
  * sure its month has data, and keeps the project awake for reviewers.
  */
 export async function GET(request: Request) {
+  // Closed unless CRON_SECRET is set: Vercel Cron sends it, nobody else has it.
   const secret = process.env.CRON_SECRET;
-  if (secret && request.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) {
     return new Response("Unauthorized", { status: 401 });
   }
 

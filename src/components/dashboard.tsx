@@ -19,6 +19,7 @@ type Props = {
   initialEntries: Entry[] | null;
   initialRange: MonthRange;
   isDemo: boolean;
+  businessName: string | null;
 };
 
 /** Coming back to the app after this long refreshes the numbers. */
@@ -26,7 +27,7 @@ const STALE_AFTER_MS = 60_000;
 
 const newestFirst = (a: Entry, b: Entry) => Date.parse(b.createdAt) - Date.parse(a.createdAt);
 
-export function Dashboard({ initialEntries, initialRange, isDemo }: Props) {
+export function Dashboard({ initialEntries, initialRange, isDemo, businessName }: Props) {
   const [supabase] = useState(createClient);
   const [range, setRange] = useState(initialRange);
   const [entries, setEntries] = useState(initialEntries);
@@ -181,9 +182,9 @@ export function Dashboard({ initialEntries, initialRange, isDemo }: Props) {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5">
-      <header className="box-content flex h-16 shrink-0 items-center justify-between pt-[env(safe-area-inset-top)]">
-        <Brand />
-        <div className="-mr-2 flex items-center gap-1">
+      <header className="box-content flex h-16 shrink-0 items-center justify-between gap-3 pt-[env(safe-area-inset-top)]">
+        <Brand label={businessName ?? undefined} />
+        <div className="-mr-2 flex shrink-0 items-center gap-1">
           {isDemo && (
             <span className="rounded-full border border-line bg-surface px-2.5 py-0.5 text-[14px] font-medium text-ink-soft">
               Demo

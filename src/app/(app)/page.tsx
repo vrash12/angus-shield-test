@@ -20,12 +20,23 @@ export default async function HomePage() {
   const savedZone = (await cookies()).get("tz")?.value;
   const range = monthRange(isTimeZone(savedZone) ? savedZone : FALLBACK_TIME_ZONE);
 
-  let entries: Entry[] | null = null;
-  try {
-    entries = await loadMonth(supabase, range, isDemo);
-  } catch (error) {
-    console.error("Couldn't load this month", error);
-  }
+  const [month, business] = await Promise.allSettled([
+    loadMonth(supabase, range, isDemo),
+    // Row Level Security returns this login's business and nothing else.
+    supabase.from("businesses").select("name").maybeSingle(),
+  ]);
 
-  return <Dashboard initialEntries={entries} initialRange={range} isDemo={isDemo} />;
+  let entries: Entry[] | null = null;
+  if (month.status === "fulfilled") entries = month.value;
+  else console.error("Couldn't load this month", month.reason);
+  const businessName = business.status === "fulfilled" ? (business.value.data?.name ?? null) : null;
+
+  return (
+    <Dashboard
+      initialEntries={entries}
+      initialRange={range}
+      isDemo={isDemo}
+      businessName={businessName}
+    />
+  );
 }

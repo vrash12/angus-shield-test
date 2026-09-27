@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import { connection } from "next/server";
 import "./globals.css";
 
 const geist = Geist({
@@ -24,7 +25,11 @@ export const viewport: Viewport = {
   themeColor: "#f6f5f1",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Render every page per request, so each one carries the nonce from its
+  // Content Security Policy (see src/proxy.ts).
+  await connection();
+
   return (
     <html lang="en-AU" className={`${geist.variable} antialiased`}>
       <body>{children}</body>
