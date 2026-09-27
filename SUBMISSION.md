@@ -1,7 +1,7 @@
 # Site VIP · Developer test submission
 
 - **Live app:** _add Vercel URL once deployed_
-- **Source:** _add GitHub URL once pushed_
+- **Source:** https://github.com/vrash12/angus-shield-test
 - **Demo:** tap **Use demo account** on the login screen (credentials are in the README)
 - **Monthly rate (AUD):** $_____ per month
 
