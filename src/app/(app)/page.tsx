@@ -29,6 +29,11 @@ export default async function HomePage() {
   let entries: Entry[] | null = null;
   if (month.status === "fulfilled") entries = month.value;
   else console.error("Couldn't load this month", month.reason);
+  // Signed in, but the account has no business: it was deleted (e.g. a demo
+  // reset) while this session was still open.
+  if (business.status === "fulfilled" && !business.value.error && !business.value.data) {
+    redirect("/auth/sign-out");
+  }
   const businessName = business.status === "fulfilled" ? (business.value.data?.name ?? null) : null;
 
   return (
