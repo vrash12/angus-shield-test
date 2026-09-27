@@ -4,7 +4,7 @@
 
 A deliberately small, mobile-first slice of the Site VIP / Angus Shield idea for Australian tradies: this month's **$ in**, **$ out** and **Profit** at a glance, and one thumb-sized **Job done** button to record a finished job.
 
-- **Live app:** _add Vercel URL once deployed_
+- **Live app:** https://angus-shield-test.vercel.app
 - **Submission answers:** [SUBMISSION.md](SUBMISSION.md)
 
 ## Try it
