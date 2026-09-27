@@ -3,7 +3,7 @@
 - **Live app:** https://angus-shield-test.vercel.app
 - **Source:** https://github.com/vrash12/angus-shield-test
 - **Demo:** tap **Use demo account** on the login screen (credentials are in the README)
-- **Monthly rate (AUD):** $_____ per month
+- **Monthly rate (AUD):** $800 per month
 
 ---
 
